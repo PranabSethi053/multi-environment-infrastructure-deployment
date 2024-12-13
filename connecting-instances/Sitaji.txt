@@ -1,0 +1,89 @@
+HP@PRANAB MINGW64 ~/Downloads
+ubuntu@ip-172-31-11-16:~$ pwd
+/home/ubuntu
+ubuntu@ip-172-31-11-16:~$ cd .ssh
+ubuntu@ip-172-31-11-16:~/.ssh$ ssh key-gen
+ssh: Could not resolve hostname key-gen: Temporary failure in name resolution
+ubuntu@ip-172-31-11-16:~/.ssh$ ssh-keygen
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/ubuntu/.ssh/id_ed25519):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/ubuntu/.ssh/id_ed25519
+Your public key has been saved in /home/ubuntu/.ssh/id_ed25519.pub
+The key fingerprint is:
+The key's randomart image is:
++--[ED25519 256]--+
+|    .   .        |
+|   ...   .       |
+| ..=E.  S        |
+|o*=*=*           |
+|*+**O+.          |
+|.=***=.          |
+|+BB.++.          |
++----[SHA256]-----+
+ubuntu@ip-172-31-11-16:~/.ssh$ ls
+authorized_keys  id_ed25519  id_ed25519.pub
+ubuntu@ip-172-31-11-16:~/.ssh$ cat id_ed25519
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACDwbM1y6cqnIWZdYPpz/9yg7lbarRDKz+1J9SodoqIrpAAAAKAKSgm5CkoJ
+uQAAAAtzc2gtZWQyNTUxOQAAACDwbM1y6cqnIWZdYPpz/9yg7lbarRDKz+1J9SodoqIrpA
+AAAECovUikRY969b3BRJcJWEybezihpiP5QOSKSRzshy39vPBszXLpyqchZl1g+nP/3KDu
+VtqtEMrP7Un1Kh2ioiukAAAAFnVidW50dUBpcC0xNzItMzEtMTEtMTYBAgMEBQYH
+-----END OPENSSH PRIVATE KEY-----
+ubuntu@ip-172-31-11-16:~/.ssh$ cat id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBszXLpyqchZl1g+nP/3KDuVtqtEMrP7Un1Kh2ioiuk ubuntu@ip-172-31-11-16
+ubuntu@ip-172-31-11-16:~/.ssh$ ls
+authorized_keys  id_ed25519  id_ed25519.pub
+ubuntu@ip-172-31-11-16:~/.ssh$ cat id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBszXLpyqchZl1g+nP/3KDuVtqtEMrP7Un1Kh2ioiuk ubuntu@ip-172-31-11-16
+ubuntu@ip-172-31-11-16:~/.ssh$ ls
+authorized_keys  id_ed25519  id_ed25519.pub
+ubuntu@ip-172-31-11-16:~/.ssh$ cat authorized_keys
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDUv9LP6TOUsg+H3OVFlPLwEdhuP6trKtR560mkJ3YxH ubuntu@ip-172-31-9-168
+
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDB8iONq8SFVkVCDmwn51btDrCsPGxzBVHw3QecYVqJoe3k3UjjuAvLXwC70jTmcfvUbndhA9kmSdi9c0Zuh0ZS1GUj148lCBLFNwmkP1n2OCF77OYR1kYTJEE86uOtmeSgq2AD/gMb+pMdhXYvLoAOxPwt6q4xi86TVKrCZZjHVbNnrVWuZOi6jM7w1TjeygEiXl6/8JxLpj++m4wOr/PqqCwPMZiJEOm2wD7n1js3S58/Avc4LCtIRfJni6uc+VuCH4aMG6RfGmjsX7ZkqwgqByAlaM8EEIQXuQDfOQh7yrGDqoDuB8YT/Kv1DlroCwUJAiIHnovR5/m0RLFF0gSF Ring-key
+ubuntu@ip-172-31-11-16:~/.ssh$ ssh -i id_ed25519 ubuntu@ec2-3-25-73-187.ap-southeast-2.compute.amazonaws.com
+The authenticity of host 'ec2-3-25-73-187.ap-southeast-2.compute.amazonaws.com (172.31.9.168)' can't be established.
+ED25519 key fingerprint is SHA256:J3ISs1vejv1B0JRQ5VgjxrPNmq962FccqzU4ur27JqI.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-3-25-73-187.ap-southeast-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-1018-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Fri Dec 13 14:36:19 UTC 2024
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+Last login: Fri Dec 13 14:15:53 2024 from 182.68.208.139
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-9-168:~$ ls
+Ramji
+ubuntu@ip-172-31-9-168:~$ exit
+logout
+Connection to ec2-3-25-73-187.ap-southeast-2.compute.amazonaws.com closed.
+ubuntu@ip-172-31-11-16:~/.ssh$
+
