@@ -1,0 +1,183 @@
+# GIT CLONE
+------------
+------------
+
+
+ubuntu@ip-172-31-7-160:~/github$ git clone https://github.com/deparkes/simple-django-app.git
+Cloning into 'simple-django-app'...
+remote: Enumerating objects: 27, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 27 (delta 0), reused 0 (delta 0), pack-reused 18 (from 1)
+Receiving objects: 100% (27/27), 6.05 KiB | 1.51 MiB/s, done.
+
+# DOCKER BIULD
+--------------
+--------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker build -t counter-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  96.77kB
+Step 1/6 : FROM python:3.7
+ ---> 16d93ae3411b
+Step 2/6 : WORKDIR /app
+ ---> Using cache
+ ---> ce983af419eb
+Step 3/6 : COPY . .
+ ---> 2925cdcf41df
+Step 4/6 : RUN pip install -r requirements.txt
+ ---> Running in 388c38a6798f
+Collecting django
+  Downloading Django-3.2.25-py3-none-any.whl (7.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.9/7.9 MB 48.3 MB/s eta 0:00:00
+Collecting asgiref<4,>=3.3.2
+  Downloading asgiref-3.7.2-py3-none-any.whl (24 kB)
+Collecting sqlparse>=0.2.2
+  Downloading sqlparse-0.4.4-py3-none-any.whl (41 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.2/41.2 kB 5.2 MB/s eta 0:00:00
+Collecting pytz
+  Downloading pytz-2024.2-py2.py3-none-any.whl (508 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 508.0/508.0 kB 55.3 MB/s eta 0:00:00
+Collecting typing-extensions>=4
+  Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+Installing collected packages: pytz, typing-extensions, sqlparse, asgiref, django
+Successfully installed asgiref-3.7.2 django-3.2.25 pytz-2024.2 sqlparse-0.4.4 typing-extensions-4.7.1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 24.0
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 388c38a6798f
+ ---> 90bab0ea5087
+. OK
+  Applying counter.0001_initial... OK
+  Applying sessions.0001_initial... OK
+System check identified some issues:
+
+WARNINGS:
+counter.Counter: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+        HINT: Configure the DEFAULT_AUTO_FIELD setting .. OKor the CounterConfig.default_auto_field attribute to po. OKint to a subclass of AutoField, e.g. 'django.db.models.. OKBigAutoField'.
+ ---> Removed intermediate container 246168c4ce7f
+ ---> 7c40d122ed63
+Step 6/6 : CMD ["python","cool_counters/manage.py","runserver"]
+ ---> Running in 3718f8c7a807
+ ---> Removed intermediate container 3718f8c7a807       OK
+ ---> 0309c7963aac
+Successfully built 0309c7963aac
+Successfully tagged counter-app:latest
+
+
+# DOCKER RUN WITH PORT NUMBER
+-----------------------------
+-----------------------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker run -d -p 8000:8000 counter-app:latest4cdecf6841109b035d2eb3e909591207e6cd370ed8956b27403a46ac93813c52
+
+
+
+# CHECK WITH DOCKER PS
+----------------------
+----------------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+1c6116a900ef   counter-app:latest   "python cool_counter…"   20 seconds ago   Up 18 seconds   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   friendly_williams
+952fcdf96deb   nginx:latest         "/docker-entrypoint.…"   14 hours ago     Up 14 hours     0.0.0.0:80->80/tcp, :::80->80/tcp           infallible_murdock
+9035f2fe7c9d   mysql:latest         "docker-entrypoint.s…"   14 hours ago     Up 14 hours     3306/tcp, 33060/tcp                         priceless_albattani
+
+
+
+# CHANGING THE WEBPAGE
+----------------------
+----------------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker build -t counter-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  96.77kB
+Step 1/6 : FROM python:3.7
+ ---> 16d93ae3411b
+Step 2/6 : WORKDIR /app
+ ---> Using cache
+ ---> ce983af419eb
+Step 3/6 : COPY . .
+ ---> f3ed2893d613
+Step 4/6 : RUN pip install -r requirements.txt
+ ---> Running in 6851c7d517f7
+Collecting django
+  Downloading Django-3.2.25-py3-none-any.whl (7.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.9/7.9 MB 39.7 MB/s eta 0:00:00
+Collecting pytz
+  Downloading pytz-2024.2-py2.py3-none-any.whl (508 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 508.0/508.0 kB 52.5 MB/s eta 0:00:00
+Collecting sqlparse>=0.2.2
+  Downloading sqlparse-0.4.4-py3-none-any.whl (41 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.2/41.2 kB 5.7 MB/s eta 0:00:00
+Collecting asgiref<4,>=3.3.2
+  Downloading asgiref-3.7.2-py3-none-any.whl (24 kB)
+Collecting typing-extensions>=4
+  Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+Installing collected packages: pytz, typing-extensions, sqlparse, asgiref, django
+Successfully installed asgiref-3.7.2 django-3.2.25 pytz-2024.2 sqlparse-0.4.4 typing-extensions-4.7.1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 24.0
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 6851c7d517f7
+ ---> 42a5e7a18e28
+Step 5/6 : RUN python cool_counters/manage.py migrate
+ ---> Running in a27780ca00a9
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, counter, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying counter.0001_initial... OK
+  Applying sessions.0001_initial... OK
+System check identified some issues:
+
+WARNINGS:
+counter.Counter: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+        HINT: Configure the DEFAULT_AUTO_FIELD setting or the CounterConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+ ---> Removed intermediate container a27780ca00a9
+ ---> 9a7daa5d4d60
+Step 6/6 : CMD ["python","cool_counters/manage.py","runserver","0.0.0.0:8000"]
+ ---> Running in fa72de8e4c8e
+ ---> Removed intermediate container fa72de8e4c8e
+ ---> 3c77f18bde01
+Successfully built 3c77f18bde01
+Successfully tagged counter-app:latest
+
+
+# KILL THE OLD CONTAINER ID
+---------------------------
+---------------------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker kill 1c6116a900ef && docker rm 1c6116a900ef
+
+# RUN THE LATEST OR NEW ONE AFTER CHANGES
+-----------------------------------------
+-----------------------------------------
+
+ubuntu@ip-172-31-7-160:~/github/simple-django-app$ docker run -d -p 8000:8000 counter-app:latest
+291944857b76182daef2b1f6619d04208a405c404181b73b3c5f4870673bea62
+
