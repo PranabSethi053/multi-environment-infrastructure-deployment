@@ -1,0 +1,131 @@
+ubuntu@ip-172-31-7-160:~/mysql-volume$ ls
+ubuntu@ip-172-31-7-160:~/mysql-volume$ pwd
+/home/ubuntu/mysql-volume
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker run -d -v /home/ubuntu/mysql-volume
+:/var/lib/mysql --name mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+"docker run" requires at least 1 argument.
+See 'docker run --help'.
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Create and run a new container from an image
+-bash: :/var/lib/mysql: No such file or directory
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker images
+REPOSITORY   TAG             IMAGE ID       CREATED         SIZE
+mysql        latest          56a8c14e1404   3 months ago    603MB
+python       3.7             16d93ae3411b   18 months ago   994MB
+openjdk      17-jdk-alpine   264c9bdce361   3 years ago     326MB
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker run -d -v /home/ubuntu/mysql-volume:/var/lib/mysql --name mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+135c138fa4cef9c1039baeca9ea7486a4e206b1d6162252c6cc47da8ae3b3f14
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS         PORTS                 NAMES
+135c138fa4ce   mysql:latest   "docker-entrypoint.s…"   10 seconds ago   Up 9 seconds   3306/tcp, 33060/tcp   mysql
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker exec -it 135c138fa4ce bash
+bash-5.1# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 9.1.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database kyc_devops;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use kyc_devops;
+Database changed
+mysql> CREATE TABLE messages (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     message TEXT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into messages (message) values (
+    -> insert into messages (message) values ("KYC submitted");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'into messages (message) values ("KYC submitted")' at line 2
+mysql> insert into messages (message) values ("KYC submitted");
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from messages
+    -> select * from messages;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from messages' at line 2
+mysql> select * from messages;
++----+---------------+
+| id | message       |
++----+---------------+
+|  1 | KYC submitted |
++----+---------------+
+1 row in set (0.00 sec)
+
+mysql> insert into messages (message) values ("KYC submitted");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into messages (message) values ("KYC submitted");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from messages;
++----+---------------+
+| id | message       |
++----+---------------+
+|  1 | KYC submitted |
+|  2 | KYC submitted |
+|  3 | KYC submitted |
++----+---------------+
+3 rows in set (0.00 sec)
+
+mysql> exit
+Bye
+bash-5.1# exit
+exit
+ubuntu@ip-172-31-7-160:~/mysql-volume$ ls
+'#ib_16384_0.dblwr'   binlog.000002     ib_buffer_pool   mysql.sock              server-key.pem
+'#ib_16384_1.dblwr'   binlog.index      ibdata1          mysql_upgrade_history   sys
+'#innodb_redo'        ca-key.pem        ibtmp1           performance_schema      undo_001
+'#innodb_temp'        ca.pem            kyc_devops       private_key.pem         undo_002
+ auto.cnf             client-cert.pem   mysql            public_key.pem
+ binlog.000001        client-key.pem    mysql.ibd        server-cert.pem
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS
+     NAMES
+135c138fa4ce   mysql:latest   "docker-entrypoint.s…"   5 minutes ago   Up 5 minutes   3306/tcp, 33060/tcp   mysql
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker stop 135c138fa4ce && docker rm 135c138fa4ce
+135c138fa4ce
+135c138fa4ce
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker run -d -v /home/ubuntu/mysql-volume:/var/lib/mysql --name mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+66ce0bc8afda299016ea9537064e5d6a1c6c1aaa86382aa4b53404091fe2e2cd
+ubuntu@ip-172-31-7-160:~/mysql-volume$ docker exec -it 66ce0bc8afda299016ea9537064e5d6a1c6c1aaa86382aa4b53404091fe2e2cd bash
+bash-5.1# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 9.1.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| kyc_devops         |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.02 sec)
+
+
