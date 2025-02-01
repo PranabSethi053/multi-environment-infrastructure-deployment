@@ -1,0 +1,585 @@
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$  docker run -d --name mysql -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=admin -v mysql-data:/var/lib/mysql -p 3306:3306 --network=twotier mysql:5.7
+edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ docker inspect edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3
+[
+    {
+        "Id": "edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3",
+        "Created": "2025-02-01T03:45:33.935995126Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "mysqld"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 4870,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2025-02-01T03:45:34.527451187Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:5107333e08a87b836d48ff7528b1e84b9c86781cc9f1748bbc1b8c42a870d933",
+        "ResolvConfPath": "/var/lib/docker/containers/edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3/hostname",
+        "HostsPath": "/var/lib/docker/containers/edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3/hosts",
+        "LogPath": "/var/lib/docker/containers/edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3/edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3-json.log",
+        "Name": "/mysql",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "mysql-data:/var/lib/mysql"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "twotier",
+            "PortBindings": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "3306"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                61,
+                103
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/b5cd252fd9504a37a409e74450f51a1408de3215438691d094e6690b25927ef2-init/diff:/var/lib/docker/overlay2/a073aa40554bb0875c249a0d7117fa8bc5a06e0a9976d52844a1c353c099d1b5/diff:/var/lib/docker/overlay2/f16f936a34825769355780d175cbf3fa06774dfefe3d6ea87741f6206961b9eb/diff:/var/lib/docker/overlay2/f1d9b435c9e8a219e07c23809cb9c025ef1d299c3a4fbe4f543a936a43e75990/diff:/var/lib/docker/overlay2/5926493ef61990c5994557d5818ef0fe4bd2674d0e3685fcac855bbfeee0e023/diff:/var/lib/docker/overlay2/ae5b3f19c79d58b4713e283b9ef6cc382e35871ac39e85d320b8cdd086011ff7/diff:/var/lib/docker/overlay2/84a5eb80591d1ec921b5d4b8f4d05401ee6ccda769d01ad95608b684e6717eba/diff:/var/lib/docker/overlay2/73020bbdcdb77d1d81481ce4878e0d34d1d6b829625b1738022cf64a938fdba0/diff:/var/lib/docker/overlay2/c7ee27d7db1c836811f744314c3ddb207941f6ce2d2555b37f42d08c9ca52667/diff:/var/lib/docker/overlay2/c08227068d59ebb88a1aa6f4eb3e833391b952fd2b2718aba865b81be35b865f/diff:/var/lib/docker/overlay2/dc2c03b1251a274637f34cd121e05c56a58471efa4cf618e67da80dd94f00bd8/diff:/var/lib/docker/overlay2/6ad44d76f9e5cdc19fd6b2d9df59c5580660fe3e9d5ed23ffa8e6f446d76733f/diff",
+                "MergedDir": "/var/lib/docker/overlay2/b5cd252fd9504a37a409e74450f51a1408de3215438691d094e6690b25927ef2/merged",
+                "UpperDir": "/var/lib/docker/overlay2/b5cd252fd9504a37a409e74450f51a1408de3215438691d094e6690b25927ef2/diff",
+                "WorkDir": "/var/lib/docker/overlay2/b5cd252fd9504a37a409e74450f51a1408de3215438691d094e6690b25927ef2/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "mysql-data",
+                "Source": "/var/lib/docker/volumes/mysql-data/_data",
+                "Destination": "/var/lib/mysql",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "edddeb53b319",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "3306/tcp": {},
+                "33060/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "MYSQL_DATABASE=mydb",
+                "MYSQL_ROOT_PASSWORD=admin",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.16",
+                "MYSQL_MAJOR=5.7",
+                "MYSQL_VERSION=5.7.44-1.el7",
+                "MYSQL_SHELL_VERSION=8.0.35-1.el7"
+            ],
+            "Cmd": [
+                "mysqld"
+            ],
+            "Image": "mysql:5.7",
+            "Volumes": {
+                "/var/lib/mysql": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "dcfbe406039a81a78b02efbb6cdf002a42098ded62dfcf8b3784342f098fa3ce",
+            "SandboxKey": "/var/run/docker/netns/dcfbe406039a",
+            "Ports": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "3306"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "3306"
+                    }
+                ],
+                "33060/tcp": null
+            },
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "twotier": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "02:42:ac:12:00:02",
+                    "NetworkID": "7f42eb47dcbdb9e5e5c33b8a93294c7011e6fdd7be9b0a4a296fcfbe1a227b74",
+                    "EndpointID": "274114304d4a03d6b82ed31e3bd8e5f640c72f273ad5e5a69b8dbc4badbc82a5",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DriverOpts": null,
+                    "DNSNames": [
+                        "mysql",
+                        "edddeb53b319"
+                    ]
+                }
+            }
+        }
+    }
+]
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ history
+    1  clear
+    2  mkdir github
+    3  ls
+    4  git clone https://github.com/LondheShubham153/two-tier-flask-app.git
+    5  ls
+    6  cd github/
+    7  cd
+    8  mv two-tier-flask-app github/
+    9  ls
+   10  cd github/
+   11  ls
+   12  cd two-tier-flask-app
+   13  ls
+   14  docker build -t flaskapp .
+   15  docker image
+   16  docker images
+   17  cd
+   18  docker images
+   19  docker pull mysql:latest
+   20  docker images
+   21  docker run -d --name mysql -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD=admin -v mysql-data:/var/lib/mysql -p 3306:3306 mysql:5.7
+   22  docker ps
+   23  cd github/two-tier-flask-app
+   24  ls
+   25  docker ps
+   26  docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root  -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 flaskapp:latest
+   27  docker ps
+   28  docker ps -a
+   29  docker ps
+   30  docker ps -a
+   31  docker logs b90f89303fb5
+   32  docker inspect a37b0e28f0a6
+   33  docker ps
+   34  docker ps -a
+   35  docker inspect b90f89303fb5
+   36  docker network ls
+   37  docker network create -d bridge twotier
+   38  docker network ls
+   39  docker inspect 7f42eb47dcbd
+   40  docker ps
+   41  docker ps -a
+   42  docker stop b90f89303fb5 && docker rm b90f89303fb5  a37b0e28f0a6
+   43  docker ps
+   44  docker stop a37b0e28f0a6 && docker rm a37b0e28f0a6
+   45  docker ps -a
+   46  history
+   47  clear
+   48  docker inspect edddeb53b319e380045a2de6257cc4ff1a11feb8c1ec582a41131f7b829898e3
+   49  history
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ docker run -d --name flaskapp -e MYSQL_HOST=mysql -e MYSQL_USER=root  -e MYSQL_PASSWORD=admin -e MYSQL_DB=mydb -p 5000:5000 --network=twotier flaskapp:latest
+6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ docker inspect 6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1
+[
+    {
+        "Id": "6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1",
+        "Created": "2025-02-01T03:48:58.855137206Z",
+        "Path": "python",
+        "Args": [
+            "app.py"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 5149,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2025-02-01T03:48:59.302002319Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:992a84dba757463079e5d4c58a7e87b523af90707e27efd9aa1514e0abd59683",
+        "ResolvConfPath": "/var/lib/docker/containers/6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1/hostname",
+        "HostsPath": "/var/lib/docker/containers/6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1/hosts",
+        "LogPath": "/var/lib/docker/containers/6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1/6cbe2f5fdd3c9e720bd03e453853e7d49c2eb05fffea5d9782188e6633f02fd1-json.log",
+        "Name": "/flaskapp",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "twotier",
+            "PortBindings": {
+                "5000/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "5000"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                61,
+                103
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/40c94fe68aa677d33e25e4abdb494333213f3d3916a48e919f2132349a575873-init/diff:/var/lib/docker/overlay2/17ea8fc8a4420f8f6883ebedabf4dd5d740b4b90c02a3298e28b196b05cdc780/diff:/var/lib/docker/overlay2/e007dbc48287d0bdaff2e02167b638e8f2c23f27e68876c5b8c83c5eed26f49c/diff:/var/lib/docker/overlay2/bd51bbe6657dfac7f4ec7b52b20304db87c557e1def349e568abbe49ab8ed800/diff:/var/lib/docker/overlay2/16dce74d8c464bb0d1ca4fd7b8bd50d332e3ccadb0bbcc1e90652a673209e16a/diff:/var/lib/docker/overlay2/fe896cc5df244ea3f96a2ab05336db07a48305eaccfb0225cb77e8800a19aecd/diff:/var/lib/docker/overlay2/e4e4e645655c5bd3050dfa1741523e666e181f2f92e218855dd75897493d67ee/diff:/var/lib/docker/overlay2/ee4f02347e5eacb9f710939c581a298d3d8c35d2250aab263e229785a5963c6b/diff:/var/lib/docker/overlay2/08c620c76b0a2266b4f9327264659d630c5fbe4a680a8cbc661ba3b45603b822/diff:/var/lib/docker/overlay2/9ce0fa7731c7d926d415888f90e5873220d927eb5534d6b28ba1c888b2340c50/diff:/var/lib/docker/overlay2/398d3558c6caef4bbb3e153041af9452de1e7ae1364feb8fae878ab50981aff2/diff",
+                "MergedDir": "/var/lib/docker/overlay2/40c94fe68aa677d33e25e4abdb494333213f3d3916a48e919f2132349a575873/merged",
+                "UpperDir": "/var/lib/docker/overlay2/40c94fe68aa677d33e25e4abdb494333213f3d3916a48e919f2132349a575873/diff",
+                "WorkDir": "/var/lib/docker/overlay2/40c94fe68aa677d33e25e4abdb494333213f3d3916a48e919f2132349a575873/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "6cbe2f5fdd3c",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "5000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "MYSQL_HOST=mysql",
+                "MYSQL_USER=root",
+                "MYSQL_PASSWORD=admin",
+                "MYSQL_DB=mydb",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568",
+                "PYTHON_VERSION=3.9.21",
+                "PYTHON_SHA256=3126f59592c9b0d798584755f2bf7b081fa1ca35ce7a6fea980108d752a05bb1"
+            ],
+            "Cmd": [
+                "python",
+                "app.py"
+            ],
+            "Image": "flaskapp:latest",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "691f5a9e2deaebdc538ae8cef0a9e9225a9f9aee8d83a3c9594e7eac56ff28f2",
+            "SandboxKey": "/var/run/docker/netns/691f5a9e2dea",
+            "Ports": {
+                "5000/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "5000"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "5000"
+                    }
+                ]
+            },
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "twotier": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "02:42:ac:12:00:03",
+                    "NetworkID": "7f42eb47dcbdb9e5e5c33b8a93294c7011e6fdd7be9b0a4a296fcfbe1a227b74",
+                    "EndpointID": "80fedf0ddb6287f2203e3daec49f540604112491695c8ab68495acaf03b50479",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.3",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DriverOpts": null,
+                    "DNSNames": [
+                        "flaskapp",
+                        "6cbe2f5fdd3c"
+                    ]
+                }
+            }
+        }
+    }
+]
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS         PORTS
+                                         NAMES
+6cbe2f5fdd3c   flaskapp:latest   "python app.py"          2 minutes ago   Up 2 minutes   0.0.0.0:5000->5000/tcp, :::5000->5000/tcp              flaskapp
+edddeb53b319   mysql:5.7         "docker-entrypoint.s…"   5 minutes ago   Up 5 minutes   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp   mysql
+ubuntu@ip-172-31-1-227:~/github/two-tier-flask-app$ docker exec -it edddeb53b319 bash
+bash-4.2# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.44 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> show databases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show databases' at line 2
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mydb               |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use mydb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from messages;
+Empty set (0.00 sec)
+
+mysql> select * from messages;
+Empty set (0.00 sec)
+
+mysql> exit
+Bye
+bash-4.2# exit
+exit
+
