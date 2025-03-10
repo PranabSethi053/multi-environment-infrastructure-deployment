@@ -1,0 +1,231 @@
+pipeline{
+    agent any;
+    
+    stages{
+        stage("Code Clone"){
+            steps{
+                git url:"https://github.com/LondheShubham153/node-todo-cicd.git" , branch:"master"
+            }
+            
+        }
+        stage("Image Build & Test"){
+            steps{
+                sh "docker build -t node-app ."
+            }
+        }
+        stage("Deploy"){
+            steps{
+                sh "docker compose up -d"
+            }
+        }
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Started by user Pranab Sethi
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/node-cicd
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Code Clone)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/LondheShubham153/node-todo-cicd.git
+ > git init /var/lib/jenkins/workspace/node-cicd # timeout=10
+Fetching upstream changes from https://github.com/LondheShubham153/node-todo-cicd.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/LondheShubham153/node-todo-cicd.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/LondheShubham153/node-todo-cicd.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 34e70d419a1f2bc0a19086b38b7d7cd1627ecb53 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 34e70d419a1f2bc0a19086b38b7d7cd1627ecb53 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b master 34e70d419a1f2bc0a19086b38b7d7cd1627ecb53 # timeout=10
+Commit message: "Set up CI with Azure Pipelines"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Image Build & Test)
+[Pipeline] sh
++ docker build -t node-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  630.3kB
+
+Step 1/7 : FROM node:12.2.0-alpine
+12.2.0-alpine: Pulling from library/node
+e7c96db7181b: Pulling fs layer
+a9b145f64bbe: Pulling fs layer
+3bcb5e14be53: Pulling fs layer
+3bcb5e14be53: Verifying Checksum
+3bcb5e14be53: Download complete
+e7c96db7181b: Verifying Checksum
+e7c96db7181b: Download complete
+e7c96db7181b: Pull complete
+a9b145f64bbe: Verifying Checksum
+a9b145f64bbe: Download complete
+a9b145f64bbe: Pull complete
+3bcb5e14be53: Pull complete
+Digest: sha256:2ab3d9a1bac67c9b4202b774664adaa94d2f1e426d8d28e07bf8979df61c8694
+Status: Downloaded newer image for node:12.2.0-alpine
+ ---> f391dabf9dce
+Step 2/7 : WORKDIR /node
+ ---> Running in 263519de675e
+ ---> Removed intermediate container 263519de675e
+ ---> 21ba2af01d96
+Step 3/7 : COPY . .
+ ---> e7c9cfcffe65
+Step 4/7 : RUN npm install
+ ---> Running in 2b7dca8b19cd
+[91mnpm[0m[91m WARN read-shrinkwrap This version of npm is compatible with lockfileVersion@1, but package-lock.json was generated for lockfileVersion@2. I'll try to do my best with it!
+[0m
+> ejs@2.7.4 postinstall /node/node_modules/ejs
+> node ./postinstall.js
+
+Thank you for installing [35mEJS[0m: built with the [32mJake[0m JavaScript build tool ([32mhttps://jakejs.com/[0m)
+
+[91mnpm WARN my-todolist@0.1.0 No repository field.
+[0m[91mnpm WARN my-todolist@0.1.0 No license field.
+[0m[91m
+[0madded 291 packages from 653 contributors and audited 291 packages in 4.29s
+found 28 vulnerabilities (6 low, 3 moderate, 16 high, 3 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+ ---> Removed intermediate container 2b7dca8b19cd
+ ---> aba764f363b7
+Step 5/7 : RUN npm run test
+ ---> Running in 32c194454d91
+
+> my-todolist@0.1.0 test /node
+> mocha --recursive --exit
+
+
+
+  Simple Calculations
+This part executes once before all tests
+    Test1
+executes before every test
+      ✓ Is returning 5 when adding 2 + 3
+executes before every test
+      ✓ Is returning 6 when multiplying 2 * 3
+    Test2
+executes before every test
+      ✓ Is returning 4 when adding 2 + 3
+executes before every test
+      ✓ Is returning 8 when multiplying 2 * 4
+This part executes once after all tests
+
+
+  4 passing (6ms)
+
+ ---> Removed intermediate container 32c194454d91
+ ---> f05f48cffda4
+Step 6/7 : EXPOSE 8000
+ ---> Running in 2b069186dde7
+ ---> Removed intermediate container 2b069186dde7
+ ---> dcba87ca03c6
+Step 7/7 : CMD ["node","app.js"]
+ ---> Running in 2b7a4e353047
+ ---> Removed intermediate container 2b7a4e353047
+ ---> 55e02d318d58
+Successfully built 55e02d318d58
+Successfully tagged node-app:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ docker compose up -d
+time="2025-03-10T16:17:46Z" level=warning msg="/var/lib/jenkins/workspace/node-cicd/docker-compose.yaml: `version` is obsolete"
+ web Pulling 
+ e7c96db7181b Already exists 
+ a9b145f64bbe Already exists 
+ 3bcb5e14be53 Already exists 
+ 0a80236cab06 Pulling fs layer 
+ f12f63ab5e40 Pulling fs layer 
+ 7a80c2dfde32 Pulling fs layer 
+ 244c9a8eb4ae Pulling fs layer 
+ 244c9a8eb4ae Waiting 
+ f12f63ab5e40 Downloading [>                                                  ]  3.469kB/281.4kB
+ 7a80c2dfde32 Downloading [>                                                  ]  97.56kB/9.701MB
+ f12f63ab5e40 Downloading [==================================================>]  281.4kB/281.4kB
+ f12f63ab5e40 Verifying Checksum 
+ f12f63ab5e40 Download complete 
+ 0a80236cab06 Downloading [==================================================>]      94B/94B
+ 0a80236cab06 Verifying Checksum 
+ 0a80236cab06 Download complete 
+ 0a80236cab06 Extracting [==================================================>]      94B/94B
+ 0a80236cab06 Extracting [==================================================>]      94B/94B
+ 0a80236cab06 Pull complete 
+ f12f63ab5e40 Extracting [=====>                                             ]  32.77kB/281.4kB
+ 7a80c2dfde32 Downloading [=========================>                         ]  4.854MB/9.701MB
+ f12f63ab5e40 Extracting [==================================================>]  281.4kB/281.4kB
+ f12f63ab5e40 Extracting [==================================================>]  281.4kB/281.4kB
+ f12f63ab5e40 Pull complete 
+ 7a80c2dfde32 Downloading [==================================>                ]  6.763MB/9.701MB
+ 7a80c2dfde32 Verifying Checksum 
+ 7a80c2dfde32 Download complete 
+ 7a80c2dfde32 Extracting [>                                                  ]   98.3kB/9.701MB
+ 7a80c2dfde32 Extracting [=====>                                             ]  1.081MB/9.701MB
+ 244c9a8eb4ae Downloading [==================================================>]     243B/243B
+ 244c9a8eb4ae Verifying Checksum 
+ 244c9a8eb4ae Download complete 
+ 7a80c2dfde32 Extracting [=======>                                           ]  1.376MB/9.701MB
+ 7a80c2dfde32 Extracting [=========>                                         ]  1.868MB/9.701MB
+ 7a80c2dfde32 Extracting [==========>                                        ]  1.966MB/9.701MB
+ 7a80c2dfde32 Extracting [==========>                                        ]  2.064MB/9.701MB
+ 7a80c2dfde32 Extracting [=============>                                     ]  2.654MB/9.701MB
+ 7a80c2dfde32 Extracting [===============>                                   ]  3.047MB/9.701MB
+ 7a80c2dfde32 Extracting [=================>                                 ]  3.342MB/9.701MB
+ 7a80c2dfde32 Extracting [=================>                                 ]  3.441MB/9.701MB
+ 7a80c2dfde32 Extracting [===================>                               ]  3.736MB/9.701MB
+ 7a80c2dfde32 Extracting [=====================>                             ]  4.129MB/9.701MB
+ 7a80c2dfde32 Extracting [======================>                            ]  4.325MB/9.701MB
+ 7a80c2dfde32 Extracting [=========================>                         ]  4.915MB/9.701MB
+ 7a80c2dfde32 Extracting [===============================>                   ]  6.193MB/9.701MB
+ 7a80c2dfde32 Extracting [=======================================>           ]  7.668MB/9.701MB
+ 7a80c2dfde32 Extracting [==================================================>]  9.701MB/9.701MB
+ 7a80c2dfde32 Pull complete 
+ 244c9a8eb4ae Extracting [==================================================>]     243B/243B
+ 244c9a8eb4ae Extracting [==================================================>]     243B/243B
+ 244c9a8eb4ae Pull complete 
+ web Pulled 
+ Network node-cicd_default  Creating
+ Network node-cicd_default  Created
+ Container node-cicd-web-1  Creating
+ Container node-cicd-web-1  Created
+ Container node-cicd-web-1  Starting
+ Container node-cicd-web-1  Started
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
