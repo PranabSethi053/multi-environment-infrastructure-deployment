@@ -1,0 +1,55 @@
+-------namespace.yml---------
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: notes
+
+-------service.yml----------
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: notes-app-service
+  namespace: notes
+
+spec:
+  selector:
+    app: notes-app
+  ports:
+    - protocol: TCP
+      targetPort: 8000
+      port: 8000
+
+
+-------deployment.yml--------
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: notes-app-deployment
+  namespace: notes
+  labels:
+    apps: notes-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: notes-app
+  template:
+    metadata:
+      labels:
+        app: notes-app
+    spec:
+      containers:
+      - name: notes-app
+        image: pranabsethi/notes-app:latest
+        ports:
+        - containerPort: 8000
+
+
+Cubuntu@ip-172-31-36-194:~/django-notes-app/k8s$ kubectl port-forward service/notes-app-service -n notes 8000:8000 --address=0.0.0.0
+Forwarding from 0.0.0.0:8000 -> 8000
+Handling connection for 8000
+Handling connection for 8000
+
