@@ -1,0 +1,254 @@
+--------namespace.yml----------
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: bankapp-namespace
+
+
+--------persistentvolume.yml-----------
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bankapp-pv
+  namespace: bankapp-namespace
+  labels:
+    app: bankapp
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain  # Keeps the PV after the PVC is deleted
+  storageClassName: manual  # Make sure this matches your cluster's default storage class
+  hostPath:
+    path: "/tmp/bankapp-mysql"
+    type: DirectoryOrCreate
+
+
+---------persistentvolumeclaim.yml----------
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bakapp-pvc
+  namespace: bankapp-namespace
+  labels:
+    app: bankapp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: manual
+
+
+---------------configmap.yml-------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bankapp-config
+  namespace: bankapp-namespace
+data:
+  MYSQL_DATABASE: BankDB
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_URL: jdbc:mysql://mysql-0.mysql-headless.bankapp-namespace.svc.cluster.local:3306/BankDB?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
+---------------mysqlservice.yml------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-headless
+  namespace: bankapp-namespace
+  labels:
+    app: mysql
+spec:
+  clusterIP: None
+  selector:
+    app: mysql
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+
+---------------mysqlstatefulset.yml----------
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: bankapp-namespace
+  labels:
+    app: mysql
+spec:
+  serviceName: mysql-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0  # Use a specific version
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: bankapp-config
+                  key: MYSQL_DATABASE
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+          livenessProbe:                # Correctly aligned with the container block
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:               # Correctly aligned with the container block
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+        labels:
+          app: mysql
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+
+-----------------deployment.yml----------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankapp-deployment
+  namespace: bankapp-namespace
+  labels:
+    app: bankapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bankapp
+  template:
+    metadata:
+      labels:
+        app: bankapp
+    spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox:1.28
+          command: ['sh','-c','until nc -z mysql-0.mysql-headless 3306; do echo waiting for mysql; sleep 2; done']
+      containers:
+        - name: bankapp
+          image: pranabsethi/springboot-bankapp:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: bankapp-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: bankapp-config
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: SPRING_DATASOURCE_PASSWORD
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+
+--------------service.yml----------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: bankapp-service
+  namespace: bankapp-namespace
+  labels:
+    app: bankapp
+
+spec:
+  type: NodePort
+  selector:
+    app: bankapp
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 30080
+
+----------------secrets.yml--------------
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+  namespace: bankapp-namespace
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: VGVzdEAxMjM=
+  SPRING_DATASOURCE_PASSWORD: VGVzdEAxMjM=
+
+
+
+ubuntu@ip-172-31-36-194:~/Springboot-BankApp/k8s$ kubectl get all -n bankapp-namespace
+NAME                                      READY   STATUS    RESTARTS       AGE
+pod/bankapp-deployment-7b7b455696-jms9l   1/1     Running   0              3m39s
+pod/mysql-0                               1/1     Running   1 (109m ago)   21h
+
+NAME                      TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+service/bankapp-service   NodePort    10.96.213.3   <none>        8080:30080/TCP   11s
+service/mysql-headless    ClusterIP   None          <none>        3306/TCP         21h
+
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/bankapp-deployment   1/1     1            1           3m39s
+
+NAME                                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/bankapp-deployment-7b7b455696   1         1         1       3m39s
+
+NAME                     READY   AGE
+statefulset.apps/mysql   1/1     21h
+ubuntu@ip-172-31-36-194:~/Springboot-BankApp/k8s$ kubectl port-forward service/bankapp-service -n bankapp-namespace 8080:8080 --address=0.0.0.0
+Forwarding from 0.0.0.0:8080 -> 8080
+Handling connection for 8080
+Handling connection for 8080
+
