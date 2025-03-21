@@ -1,0 +1,361 @@
+ubuntu@ip-172-31-36-194:~/kubestarter/HPA_VPA$ kubectl run -i --tty load-generator --image=busybox /bin/sh
+If you don't see a command prompt, try pressing enter.
+/ # while true; do wget -q -O- http://apache-service.default.svc.cluster.loca
+l; done
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+[O<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+<html><body><h1>It works!</h1></body></html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ubuntu@ip-172-31-36-194:~/kubestarter/HPA_VPA$ kubectl get hpa
+NAME         REFERENCE                      TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 91%/10%   1         5         4          4m9s
+ubuntu@ip-172-31-36-194:~/kubestarter/HPA_VPA$ kubectl get pods
+NAME                                 READY   STATUS    RESTARTS      AGE
+apache-deployment-7d447bc794-7k5nx   1/1     Running   0             30s
+apache-deployment-7d447bc794-7kxgs   1/1     Running   0             15m
+apache-deployment-7d447bc794-d4plz   1/1     Running   0             45s
+apache-deployment-7d447bc794-dzj84   1/1     Running   0             45s
+apache-deployment-7d447bc794-zwzxc   1/1     Running   0             45s
+load-generator                       1/1     Running   1 (28s ago)   103s
+ubuntu@ip-172-31-36-194:~/kubestarter/HPA_VPA$ kubectl delete pod load-genera
+tor
+pod "load-generator" deleted
+ubuntu@ip-172-31-36-194:~/kubestarter/HPA_VPA$ $ kubect get pods
+NAME                                 READY   STATUS        RESTARTS      AGE
+apache-deployment-7d447bc794-7k5nx   1/1     Running       0             87s
+apache-deployment-7d447bc794-7kxgs   1/1     Running       0             16m
+apache-deployment-7d447bc794-d4plz   1/1     Running       0             102s
+apache-deployment-7d447bc794-dzj84   1/1     Running       0             102s
+apache-deployment-7d447bc794-zwzxc   1/1     Running       0             102s
+load-generator                       1/1     Terminating   1 (85s ago)   2m40s
+

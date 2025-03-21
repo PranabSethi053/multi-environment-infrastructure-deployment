@@ -1,0 +1,144 @@
+---------------in apache values.yaml------------
+
+
+
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+                                                                           123,12        Bot
+
+
+------------int template folder deployment.yml-------------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "apache.fullname" . }}
+  labels:
+    {{- include "apache.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "apache.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "apache.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "apache.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+                                                                                                                                                                           1,1           Top
+
+
+ubuntu@ip-172-31-36-194:~/helm_practice$ helm install apache ./apache --namespace apache-name
+NAME: apache
+LAST DEPLOYED: Fri Mar 21 07:23:25 2025
+NAMESPACE: apache-namespace
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace apache-namespace -l "app.kubernetes.io/name=
+  export CONTAINER_PORT=$(kubectl get pod --namespace apache-namespace $POD_NAME -o jsonpath=
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace apache-namespace port-forward $POD_NAME 8080:$CONTAINER_PORT
+ubuntu@ip-172-31-36-194:~/helm_practice$ kubectl get pods -n apache-namespace
+NAME                      READY   STATUS    RESTARTS   AGE
+apache-6d4f5568b4-69548   0/1     Pending   0          22s
+apache-6d4f5568b4-fqpdh   0/1     Pending   0          22s
+ubuntu@ip-172-31-36-194:~/helm_practice$ kubectl taint node tws-cluster-worker2 dev=true:NoSc
+node/tws-cluster-worker2 untainted
+ubuntu@ip-172-31-36-194:~/helm_practice$ kubectl taint node tws-cluster-worker dev=true:NoSch
+edule-
+error: taint "dev:NoSchedule" not found
+ubuntu@ip-172-31-36-194:~/helm_practice$ kubectl get pods -n apache-namespace
+NAME                      READY   STATUS    RESTARTS   AGE
+apache-6d4f5568b4-69548   1/1     Running   0          74s
+apache-6d4f5568b4-fqpdh   1/1     Running   0          74s
+
+
+
