@@ -1,0 +1,339 @@
+resource "aws_key_pair" "my_key" {
+  key_name = "junoon-key"
+  public_key = file("junoon-key.pub")
+}
+
+resource "aws_default_vpc" "default" {
+  
+}
+
+resource "aws_security_group" "my_sg" {
+  name = "my Z plus security"
+  description = "This is a SG created by TF"
+  vpc_id = aws_default_vpc.default.id   # interpolation
+
+  ingress {
+    description = "Allow access to SSH port 22"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+   ingress {
+    description = "Allow access to HTTP port 80"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+
+  egress {
+    description = "Allow all outgoing traffic"
+    to_port = 0
+    from_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+  tags = {
+    Name = "my Z plus security"
+  }
+}
+
+resource "aws_instance" "my_instance"{
+    ami = "ami-0df368112825f8d8f"
+    instance_type = "t2.micro"
+    security_groups = [aws_security_group.my_sg.name] # interpolation
+    key_name = aws_key_pair.my_key.key_name # interpolation
+
+    root_block_device {
+      volume_size = 10
+      volume_type = "gp3"
+    }
+    tags = {
+      Name = "auto-junoon-server"
+    }
+}
+
+
+
+
+
+
+PS C:\TWS-JUNOON\terraform-practice> ssh -i "junoon-key" ubuntu@ec2-3-250-14-146.eu-west-1.compute.amazonaws.com
+The authenticity of host 'ec2-3-250-14-146.eu-west-1.compute.amazonaws.com (3.250.14.146)' can't be established.
+ED25519 key fingerprint is SHA256:5O6fbe96trHqZMTHxQXbYH1SAXfA3y+kfiUgvmoJCuc.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?yyes
+Warning: Permanently added 'ec2-3-250-14-146.eu-west-1.compute.amazonaws.com' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-1024-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Mar 24 06:31:11 UTC 2025
+
+  System load:  0.0               Processes:             105
+  Usage of /:   19.4% of 8.65GB   Users logged in:       0
+  Memory usage: 20%               IPv4 address for enX0: 172.31.36.229
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-36-229:~$ exit
+logout
+Connection to ec2-3-250-14-146.eu-west-1.compute.amazonaws.com closed.
+PS C:\TWS-JUNOON\terraform-practice> terraform destroy
+aws_key_pair.my_key: Refreshing state... [id=junoon-key]
+aws_default_vpc.default: Refreshing state... [id=vpc-0583db01073a5f6fd]
+aws_security_group.my_sg: Refreshing state... [id=sg-0663fb0ea1bad4d15]
+aws_instance.my_instance: Refreshing state... [id=i-0d69d21ab2c1032b0]
+
+Terraform used the selected providers to generate the following
+execution plan. Resource actions are indicated with the following
+symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be destroyed
+  - resource "aws_default_vpc" "default" {
+      - arn                                  = "arn:aws:ec2:eu-west-1:869935064141:vpc/vpc-0583db01073a5f6fd" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "172.31.0.0/16" -> null
+      - default_network_acl_id               = "acl-01260ce777e8b2ced"
+ -> null
+      - default_route_table_id               = "rtb-0f4cfe0c2b3f8b757"
+ -> null
+      - default_security_group_id            = "sg-0f8770ebdb9b83649" -> null
+      - dhcp_options_id                      = "dopt-002fb79067ec073ab" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - existing_default_vpc                 = true -> null
+      - force_destroy                        = false -> null
+      - id                                   = "vpc-0583db01073a5f6fd"
+ -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0f4cfe0c2b3f8b757"
+ -> null
+      - owner_id                             = "869935064141" -> null
+      - tags                                 = {} -> null
+      - tags_all                             = {} -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_instance.my_instance will be destroyed
+  - resource "aws_instance" "my_instance" {
+      - ami                                  = "ami-0df368112825f8d8f"
+ -> null
+      - arn                                  = "arn:aws:ec2:eu-west-1:869935064141:instance/i-0d69d21ab2c1032b0" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "eu-west-1b" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 1 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-0d69d21ab2c1032b0" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t2.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "junoon-key" -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-0dd07f2ff6f11c6ae"
+ -> null
+      - private_dns                          = "ip-172-31-36-229.eu-west-1.compute.internal" -> null
+      - private_ip                           = "172.31.36.229" -> null
+      - public_dns                           = "ec2-3-250-14-146.eu-west-1.compute.amazonaws.com" -> null
+      - public_ip                            = "3.250.14.146" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [
+          - "my Z plus security",
+        ] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-08e723d850ba3d653" -> null
+      - tags                                 = {} -> null
+      - tags_all                             = {} -> null
+      - tenancy                              = "default" -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-0663fb0ea1bad4d15",
+        ] -> null
+        # (7 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count       = 1 -> null
+          - threads_per_core = 1 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/sda1" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {} -> null
+          - tags_all              = {} -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-01f0cb0746b893cd1" -> null
+          - volume_size           = 10 -> null
+          - volume_type           = "gp3" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_key_pair.my_key will be destroyed
+  - resource "aws_key_pair" "my_key" {
+      - arn             = "arn:aws:ec2:eu-west-1:869935064141:key-pair/junoon-key" -> null
+      - fingerprint     = "j7jIFoRJquM+bWxCD19oWP4iefMMWM0PmyIyP7l5c7M=" -> null
+      - id              = "junoon-key" -> null
+      - key_name        = "junoon-key" -> null
+      - key_pair_id     = "key-08f8704d487050f6f" -> null
+      - key_type        = "ed25519" -> null
+      - public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINeQkZYP8k1LeFlZLytmUn0GrdpJcj+9OOreGOJeGXRh hp@PRANAB" -> null
+      - tags            = {} -> null
+      - tags_all        = {} -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.my_sg will be destroyed
+  - resource "aws_security_group" "my_sg" {
+      - arn                    = "arn:aws:ec2:eu-west-1:869935064141:security-group/sg-0663fb0ea1bad4d15" -> null
+      - description            = "This is a SG created by TF" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all outgoing traffic"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0663fb0ea1bad4d15" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow access to HTTP port 80"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow access to SSH port 22"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "my Z plus security" -> null
+      - owner_id               = "869935064141" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "my Z plus security"
+        } -> null
+      - tags_all               = {
+          - "Name" = "my Z plus security"
+        } -> null
+      - vpc_id                 = "vpc-0583db01073a5f6fd" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 0 to change, 4 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_instance.my_instance: Destroying... [id=i-0d69d21ab2c1032b0]
+aws_instance.my_instance: Still destroying... [id=i-0d69d21ab2c1032b0, 10s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-0d69d21ab2c1032b0, 20s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-0d69d21ab2c1032b0, 30s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-0d69d21ab2c1032b0, 40s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-0d69d21ab2c1032b0, 50s elapsed]
+aws_instance.my_instance: Destruction complete after 54s
+aws_key_pair.my_key: Destroying... [id=junoon-key]
+aws_security_group.my_sg: Destroying... [id=sg-0663fb0ea1bad4d15]
+aws_key_pair.my_key: Destruction complete after 0s
+aws_security_group.my_sg: Destruction complete after 1s
+aws_default_vpc.default: Destroying... [id=vpc-0583db01073a5f6fd]
+aws_default_vpc.default: Destruction complete after 0s
+
+Destroy complete! Resources: 4 destroyed.
