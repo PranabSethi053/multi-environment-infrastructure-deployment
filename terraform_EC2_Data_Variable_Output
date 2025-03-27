@@ -1,0 +1,276 @@
+--------------EC2.tf----------------
+data "aws_ami" "os_image" {
+  owners = ["099720109477"]
+  most_recent = true
+  filter {
+    name = "state"
+    values = ["available"]
+  }
+  filter {
+    name = "name"
+    values = [ "ubuntu/images/hvm-ssd/*amd64*" ]
+  }
+}
+resource "aws_key_pair" "my_key" {
+  key_name = "junoon-key"
+  public_key = file("junoon-key.pub")
+}
+
+resource "aws_default_vpc" "default" {
+
+}
+
+resource "aws_security_group" "my_sg" {
+  name = "my Z plus security"
+  description = "This is a SG created by TF"
+  vpc_id = aws_default_vpc.default.id   # interpolation
+
+  ingress {
+    description = "Allow access to SSH port 22"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+   ingress {
+    description = "Allow access to HTTP port 80"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+
+  egress {
+    description = "Allow all outgoing traffic"
+    to_port = 0
+    from_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]  # Any where out of the world
+  }
+  tags = {
+    Name = "my Z plus security"
+  }
+}
+resource "aws_instance" "my_instance"{
+    count = var.aws_instance_count
+    ami = data.aws_ami.os_image.id
+    instance_type = var.aws_ec2_instance_type
+    security_groups = [aws_security_group.my_sg.name] # interpolation
+    key_name = aws_key_pair.my_key.key_name # interpolation
+
+    root_block_device {
+      volume_size = var.aws_root_volume_size
+      volume_type = "gp3"
+    }
+    tags = {
+      Name = var.aws_ec2_instance_name
+    }
+}
+
+
+---------------Variables.tf----------------
+variable "aws_region" {
+    description = "This is the region specified for AWS Region"
+    default = "eu-west-1"
+}
+variable "aws_ec2_ami_id" {
+  description = "This is AMI id for ubuntu Instance"
+  default = "ami-0025ab8b9ec5ba8d0"
+}
+
+variable "aws_ec2_instance_type" {
+    description = "This is the Instance Type for EC2 Instance"
+    default = "t2.micro"
+}
+
+variable "aws_ec2_instance_name" {
+    description = "This is the name given to EC2 Instance"
+    default = "auto-junoon-server"
+}
+ 
+ variable "aws_root_volume_size" {
+    description = "This is the size of Root volume for AWS EC2"
+    default =  16
+   
+ }
+ variable "aws_instance_count" {
+   description = "The count of EC2 instances needed"
+   default = 1
+ }
+
+
+
+ ----------Output.tf------------------
+ output "ec2_public_ip" {
+  value = aws_instance.my_instance[*].public_ip
+}
+output "ec2_private_ip" {
+  value = aws_instance.my_instance[*].private_ip
+}
+
+
+
+
+-----------After terraform Apply----------------
+PS C:\TWS-JUNOON\terraform-practice> terraform apply
+data.aws_ami.os_image: Reading...
+aws_key_pair.my_key: Refreshing state... [id=junoon-key]
+aws_default_vpc.default: Refreshing state... [id=vpc-0583db01073a5f6fd]
+data.aws_ami.os_image: Read complete after 2s [id=ami-0d1d45276686ed1a9]
+aws_security_group.my_sg: Refreshing state... [id=sg-0cb951c998eb2e6a9]
+aws_instance.my_instance[0]: Refreshing state... [id=i-0f3afdef1b2b5b3cf]
+
+Terraform used the selected providers to generate the following
+execution plan. Resource actions are indicated with the following
+symbols:
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # aws_instance.my_instance[0] is tainted, so must be replaced
+-/+ resource "aws_instance" "my_instance" {
+      ~ arn                                  = "arn:aws:ec2:eu-west-1:869935064141:instance/i-0f3afdef1b2b5b3cf" -> (known after apply)
+      ~ associate_public_ip_address          = true -> (known after apply)
+      ~ availability_zone                    = "eu-west-1a" -> (known after apply)
+      ~ cpu_core_count                       = 1 -> (known after apply)
+      ~ cpu_threads_per_core                 = 1 -> (known after apply)
+      ~ disable_api_stop                     = false -> (known after apply)
+      ~ disable_api_termination              = false -> (known after apply)
+      ~ ebs_optimized                        = false -> (known after apply)
+      - hibernation                          = false -> null
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      ~ id                                   = "i-0f3afdef1b2b5b3cf" -> (known after apply)
+      ~ instance_initiated_shutdown_behavior = "stop" -> (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      ~ instance_state                       = "running" -> (known after apply)
+      ~ ipv6_address_count                   = 0 -> (known after apply)
+      ~ ipv6_addresses                       = [] -> (known after apply)
+      ~ monitoring                           = false -> (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      ~ placement_partition_number           = 0 -> (known after apply)
+      ~ primary_network_interface_id         = "eni-0f7da4c82044fd9db" -> (known after apply)
+      ~ private_dns                          = "ip-172-31-19-217.eu-west-1.compute.internal" -> (known after apply)
+      ~ private_ip                           = "172.31.19.217" -> (known after apply)
+      ~ public_dns                           = "ec2-3-253-81-189.eu-west-1.compute.amazonaws.com" -> (known after apply)
+      ~ public_ip                            = "3.253.81.189" -> (known after apply)
+      ~ secondary_private_ips                = [] -> (known after apply)
+      + spot_instance_request_id             = (known after apply)
+      ~ subnet_id                            = "subnet-0b72aa419b5dfe105" -> (known after apply)
+        tags                                 = {
+            "Name" = "auto-junoon-server"
+        }
+      ~ tenancy                              = "default" -> (known after apply)
+      + user_data                            = (known after apply)
+      + user_data_base64                     = (known after apply)
+      ~ vpc_security_group_ids               = [
+          - "sg-0cb951c998eb2e6a9",
+        ] -> (known after apply)
+        # (8 unchanged attributes hidden)
+
+      ~ capacity_reservation_specification (known after apply)
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      ~ cpu_options (known after apply)
+      - cpu_options {
+          - core_count       = 1 -> null
+          - threads_per_core = 1 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      ~ ebs_block_device (known after apply)
+
+      ~ enclave_options (known after apply)
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      ~ ephemeral_block_device (known after apply)
+
+      ~ instance_market_options (known after apply)
+
+      ~ maintenance_options (known after apply)
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      ~ metadata_options (known after apply)
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "optional" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      ~ network_interface (known after apply)
+
+      ~ private_dns_name_options (known after apply)
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      ~ root_block_device {
+          ~ device_name           = "/dev/sda1" -> (known after apply)
+          ~ encrypted             = false -> (known after apply)
+          ~ iops                  = 3000 -> (known after apply)
+          + kms_key_id            = (known after apply)
+          - tags                  = {} -> null
+          ~ tags_all              = {} -> (known after apply)
+          ~ throughput            = 125 -> (known after apply)
+          ~ volume_id             = "vol-0a55ae9e1e3cd4714" -> (known after apply)
+            # (3 unchanged attributes hidden)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  ~ ec2_private_ip = [
+      ~ "172.31.45.123" -> (known after apply),
+    ]
+  ~ ec2_public_ip  = [
+      ~ "34.254.230.116" -> (known after apply),
+    ]
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_instance.my_instance[0]: Destroying... [id=i-0f3afdef1b2b5b3cf]
+aws_instance.my_instance[0]: Still destroying... [id=i-0f3afdef1b2b5b3cf, 10s elapsed]
+aws_instance.my_instance[0]: Still destroying... [id=i-0f3afdef1b2b5b3cf, 20s elapsed]
+aws_instance.my_instance[0]: Still destroying... [id=i-0f3afdef1b2b5b3cf, 30s elapsed]
+aws_instance.my_instance[0]: Still destroying... [id=i-0f3afdef1b2b5b3cf, 40s elapsed]
+aws_instance.my_instance[0]: Destruction complete after 45s
+aws_instance.my_instance[0]: Creating...
+aws_instance.my_instance[0]: Still creating... [10s elapsed]
+aws_instance.my_instance[0]: Creation complete after 16s [id=i-0bed2e83c6e10ca04]
+
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+
+Outputs:
+
+ec2_private_ip = [
+  "172.31.20.94",
+]
+ec2_public_ip = [
+  "3.255.226.38",
+]
+
+
+
+
