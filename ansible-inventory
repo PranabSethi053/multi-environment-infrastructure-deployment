@@ -1,0 +1,84 @@
+---------in sudo vim /etc/ansible/hosts---------
+
+[Servers]
+server1 ansible_host=ec2-54-75-10-202.eu-west-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/keys/batch-8-ansible.pem ansible_python_interpreter=/usr/bin/python3
+server2 ansible_host=ec2-34-242-144-104.eu-west-1.compute.amazonaws.com ansible_user=ec2-user ansible_ssh_private_key_file=/home/ubuntu/keys/batch-8-ansible.pem ansible_python_interpreter=/usr/bin/python3
+server3 ansible_host=ec2-54-217-32-135.eu-west-1.compute.amazonaws.com ansible_user=ec2-user ansible_ssh_private_key_file=/home/ubuntu/keys/batch-8-redhat_key.pem ansible_python_interpreter=/usr/bin/python3
+
+[Servers:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ansible_connection=ssh
+ansible_timeout=30
+
+
+
+
+
+
+
+ubuntu@ip-172-31-47-93:~$ ansible-inventory --list -i /etc/ansible/hosts
+{
+    "Servers": {
+        "hosts": [
+            "server1",
+            "server2",
+            "server3"
+        ]
+    },
+    "_meta": {
+        "hostvars": {
+            "server1": {
+                "ansible_connection": "ssh",
+                "ansible_host": "ec2-54-75-10-202.eu-west-1.compute.amazonaws.com",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_ssh_common_args": "-o StrictHostKeyChecking=no",
+                "ansible_ssh_private_key_file": "/home/ubuntu/keys/batch-8-ansible.pem",
+                "ansible_timeout": 30,
+                "ansible_user": "ubuntu"
+            },
+            "server2": {
+                "ansible_connection": "ssh",
+                "ansible_host": "ec2-34-242-144-104.eu-west-1.compute.amazonaws.com",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_ssh_common_args": "-o StrictHostKeyChecking=no",
+                "ansible_ssh_private_key_file": "/home/ubuntu/keys/batch-8-ansible.pem",
+                "ansible_timeout": 30,
+                "ansible_user": "ec2-user"
+            },
+            "server3": {
+                "ansible_connection": "ssh",
+                "ansible_host": "ec2-54-217-32-135.eu-west-1.compute.amazonaws.com",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_ssh_common_args": "-o StrictHostKeyChecking=no",
+                "ansible_ssh_private_key_file": "/home/ubuntu/keys/batch-8-redhat_key.pem",
+                "ansible_timeout": 30,
+                "ansible_user": "ec2-user"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "Servers"
+        ]
+    }
+}
+
+
+
+ubuntu@ip-172-31-47-93:~$ ansible Servers -m ping
+server3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+server2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+server1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+ubuntu@ip-172-31-47-93:~$
+
+
