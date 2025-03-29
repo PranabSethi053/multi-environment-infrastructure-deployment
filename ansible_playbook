@@ -1,0 +1,111 @@
+---------show_date.yml--------------
+-
+  name: Date Playbook
+  hosts: Servers
+  tasks:
+    - name: Show date
+      command: date
+
+    - name: Show RAM
+      command: free -h
+
+    - name: Show disk
+      command: df -h
+
+    - name: Show uptime
+      command: uptime
+
+---------install_docker.yml-------
+-
+  name: Install Docker
+  hosts: Servers
+  become: yes
+  tasks:
+    - name: install docker based on server distribution
+      apt:
+        name: docker.io
+        state: latest
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: install the latest version of Apache
+      dnf:
+        name: docker
+        state: latest
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'RedHat'
+
+----------deploy_webpage.yml----------
+-
+  name: Deploy Webpage to nginx/apache
+  become: yes
+  hosts: Servers
+  tasks:
+
+
+    - name: install nginx/apache
+      apt:
+        name: nginx
+        state: latest
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: start nginx/apache
+      service:
+        name: nginx
+        enabled: yes
+      when: ansible_distribution == 'Ubuntu'
+
+
+    - name: copy webpage to server destination
+      copy:
+        src: index.html
+        dest: /var/www/html
+      when: ansible_distribution == 'Ubuntu'
+
+
+
+
+    - name: install nginx/apache
+      dnf:
+        name: httpd
+        state: latest
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'Redhat'
+
+
+    - name: start nginx/apache
+      service:
+        name: httpd
+        enabled: yes
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'Redhat'
+
+
+    - name: copy webpage to server destination
+      copy:
+        src: index.html
+        dest: /var/www/html
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'Redhat'
+
+-------------------patch_servers.yml-----------------
+-
+
+  name: Apply Patching activity (Upgrades)
+  hosts: Servers
+  become: yes
+  tasks:
+    - name: Upgrade the servers
+      apt:
+        update_cache: yes
+        upgrade: dist
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Upgrade the RHEL/CentOS Packages s
+      dnf:
+        name: "*"
+        state: latest
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'Redhat'
+
+
+
+    - name: Reboot the servers
+      reboot:
+        msg: "Rebooting servers : Patching Activity in Progress"
+        reboot_timeout: 600
+
