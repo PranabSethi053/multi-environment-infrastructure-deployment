@@ -1,0 +1,285 @@
+-------------------------------- TERRAFORM ------------------------------------
+
+ -------------------------- infra --------------------
+
+
+ -------------------- ec2.tf -----------------
+ resource "aws_key_pair" "deployer" {
+  key_name   = "${var.env}-terra-automate-key"
+  public_key = file("tws-terra-key.pub")
+}
+
+resource "aws_default_vpc" "default" {
+
+}
+
+resource "aws_security_group" "allow_user_to_connect" {
+  name        = "${var.env}-tws-app-sg"
+  description = "Allow user to connect via SG"
+  vpc_id      = aws_default_vpc.default.id
+  ingress {
+    description = "port 22 allow"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = " allow all outgoing traffic "
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 80 allow"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 443 allow"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.env}-tws-app-sg"
+    Environment = var.env
+  }
+}
+
+resource "aws_instance" "my_instance" {
+  count = var.instance_count
+  ami             = var.ami
+  instance_type   = var.instance_type
+  key_name        = aws_key_pair.deployer.key_name
+  security_groups = [aws_security_group.allow_user_to_connect.name]
+#   user_data = file("${path.module}/script.sh")
+  tags = {
+    Name = "${var.env}-tws-junoon-app-instance"
+    Environment = var.env
+  }
+  root_block_device {
+    volume_size = var.volume_size
+    volume_type = "gp3"
+    delete_on_termination = true
+  }
+#   connection {
+#     type        = "ssh"
+#     user        = "ubuntu"
+#     private_key = file("terra-key")
+#     host        = self.public_ip
+#   }
+
+#   provisioner "remote-exec" {
+#     inline = [
+#       "sudo apt update -y",
+#       "sudo apt install -y apache2",
+#       "sudo systemctl start apache2",
+#       "sudo systemctl enable apache2",
+#       "echo 'Hello from Terraform Provisioners!' | sudo tee /var/www/html/index.html"
+#     ]
+#   }
+}
+
+
+
+-------------  bucket.tf ---------------
+resource "random_id" "suffix" {
+  byte_length = 4
+}
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "${var.env}-tws-junoon-app-bucket-${random_id.suffix.hex}"
+  tags = {
+    Name = "${var.env}-tws-junoon-app-bucket-${random_id.suffix.hex}"
+    Environment = var.env
+  }
+}
+
+------------------ dynamodb.tf -----------------
+resource "aws_dynamodb_table" "my_table" {
+  name = "${var.env}-tws-junoon-app-table"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key = "userID"
+  attribute {
+    name = "userID"
+    type ="S"
+  }
+  tags = {
+    Name ="${var.env}-tws-junoon-app-table"
+    Environment = var.env
+  }
+}
+
+
+
+
+
+---------------- output.tf --------------------
+output "ec2_public_ips" {
+  value =   aws_instance.my_instance[*].public_ip
+  description = "Public IP addresseof AWS EC2 instances"
+}
+
+
+--------------- variables.tf----------------------
+variable "env" {
+  description = "This is the environment name eg. dev/stg/prd"
+  type = string
+}
+
+variable "instance_type" {
+  description = "This is the instance type for AWS EC2. eg. t2.micro/t2/medium/t2.small"
+  type = string
+}
+
+variable "instance_count" {
+  description = "This is the count of the no. of instances I need "
+  type = number
+}
+
+variable "ami" {
+  description = "This is the AMI ID for EC2 instance"
+  type= string
+}
+
+variable "volume_size" {
+  description = "This is the size of Root EBS for AWS EC2"
+  type = number
+}
+
+
+
+
+------------------------------    ANSIBLE    -----------------------------------
+
+
+
+--------------------------roles/nginx_role-------------------------------
+
+
+
+
+
+
+
+-------------install_nginx.yml-----------
+
+
+---
+  - name: Install Nginx Using Roles
+    hosts: servers
+    become: yes
+    roles:
+      - nginx-role
+
+-----------tasks/ main.yml---------------
+
+
+---
+# tasks file for nginx-role
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: latest
+
+  - name: Enable Nginx
+    service:
+      name: nginx
+      enabled: yes
+
+  - name:  Deploy Webpage
+    copy:
+      src: index.html
+      dest: /var/www/html
+
+
+
+ pranab@PRANAB:/mnt/c/terra-ansible-multi-env-project/ansible$ ls
+inventories  playbooks
+pranab@PRANAB:/mnt/c/terra-ansible-multi-env-project/ansible$ ansible-playbook -i inventories/dev playbooks/install_nginx.yml
+
+PLAY [Install Nginx Using Roles] ***********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [nginx-role : Install Nginx] **********************************************
+changed: [server2]
+changed: [server1]
+
+TASK [nginx-role : Enable Nginx] ***********************************************
+ok: [server2]
+ok: [server1]
+
+TASK [nginx-role : Deploy Webpage] *********************************************
+changed: [server1]
+changed: [server2]
+
+PLAY RECAP *********************************************************************
+server1                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+pranab@PRANAB:/mnt/c/terra-ansible-multi-env-project/ansible$ ansible-playbook -i inventories/stg playbooks/install_nginx.yml
+
+PLAY [Install Nginx Using Roles] ***********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [nginx-role : Install Nginx] **********************************************
+changed: [server1]
+changed: [server2]
+
+TASK [nginx-role : Enable Nginx] ***********************************************
+ok: [server2]
+ok: [server1]
+
+TASK [nginx-role : Deploy Webpage] *********************************************
+changed: [server2]
+changed: [server1]
+
+PLAY RECAP *********************************************************************
+server1                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+pranab@PRANAB:/mnt/c/terra-ansible-multi-env-project/ansible$ ansible-playbook -i inventories/prd  playbooks/install_nginx.yml
+
+PLAY [Install Nginx Using Roles] ***********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server2]
+ok: [server3]
+ok: [server1]
+
+TASK [nginx-role : Install Nginx] **********************************************
+changed: [server3]
+changed: [server1]
+changed: [server2]
+
+TASK [nginx-role : Enable Nginx] ***********************************************
+ok: [server3]
+ok: [server2]
+ok: [server1]
+
+TASK [nginx-role : Deploy Webpage] *********************************************
+changed: [server3]
+changed: [server1]
+changed: [server2]
+
+PLAY RECAP *********************************************************************
+server1                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server3                    : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
