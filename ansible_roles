@@ -165,8 +165,41 @@ variable "volume_size" {
 
 --------------------------roles/nginx_role-------------------------------
 
+--------------- DEV--------------
+[servers]
+server1 ansible_host=ec2-13-203-79-36.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+server2 ansible_host=ec2-52-66-235-244.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+ 
+[servers:vars]
+ansible_ssh_common_args= '-o StrictHostKeyChecking=no'
+ansible_connection=ssh
+ansible_timeout=30
+ansible_python_interpreter=/usr/bin/python3
+
+------------- PRD --------------------
+
+[servers]
+server1 ansible_host=ec2-13-232-145-181.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+server2 ansible_host=ec2-65-1-248-212.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+server3 ansible_host=ec2-13-127-134-97.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
 
 
+[servers:vars]
+ansible_ssh_common_args= '-o StrictHostKeyChecking=no'
+ansible_connection=ssh
+ansible_timeout=30
+ ansible_python_interpreter=/usr/bin/python3
+
+-------------- STG --------------------
+[servers]
+server1 ansible_host=ec2-3-109-214-54.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+server2 ansible_host=ec2-13-233-206-74.ap-south-1.compute.amazonaws.com ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/terra-ansible-multi-env-project/terraform/tws-terra-key
+
+[servers:vars]
+ansible_ssh_common_args= '-o StrictHostKeyChecking=no'
+ansible_connection=ssh
+ansible_timeout=30
+ansible_python_interpreter=/usr/bin/python3
 
 
 
