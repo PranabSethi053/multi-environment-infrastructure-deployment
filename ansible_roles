@@ -161,9 +161,7 @@ variable "volume_size" {
 
 ------------------------------    ANSIBLE    -----------------------------------
 
-
-
---------------------------roles/nginx_role-------------------------------
+------------------- Inventories ----------------
 
 --------------- DEV--------------
 [servers]
@@ -201,7 +199,7 @@ ansible_connection=ssh
 ansible_timeout=30
 ansible_python_interpreter=/usr/bin/python3
 
-
+--------------------------roles/nginx_role-------------------------------
 
 
 -------------install_nginx.yml-----------
